@@ -1,0 +1,25 @@
+body{
+    font-family: 'lato', sans-serif;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+table {
+    width: 600px;
+    table-layout: auto;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+    padding: 30px 50px;
+    border: 2px solid white;
+}
+div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
