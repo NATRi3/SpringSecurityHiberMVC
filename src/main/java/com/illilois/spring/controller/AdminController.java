@@ -5,6 +5,7 @@ import com.illilois.spring.entity.User;
 import com.illilois.spring.service.RoleService;
 import com.illilois.spring.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,6 +52,16 @@ public class AdminController {
         model.addAttribute("rolesSelected", userService.getUserById(id).getRoles());
         model.addAttribute("userToUpdate", userService.getUserById(id));
         return "update_user";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUser(Model model, @PathVariable("id") long id) {
+        User currentUser = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        model.addAttribute("userToShow", userService.getUserById(id));
+        return "user";
     }
 
     @PutMapping("/user/{id}")
