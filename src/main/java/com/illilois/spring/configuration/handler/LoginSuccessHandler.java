@@ -18,13 +18,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         User user = (User) authentication.getPrincipal();
         if (roles.contains("ADMIN")) {
-            httpServletResponse.sendRedirect("/spring_mvc_crud_security_app_war_exploded/admin");
+            httpServletResponse.sendRedirect("/admin");
         } else {
-            httpServletResponse.sendRedirect("/spring_mvc_crud_security_app_war_exploded/user/"+ user.getId());
+            httpServletResponse.sendRedirect("/user/"+ user.getId());
         }
     }
 }

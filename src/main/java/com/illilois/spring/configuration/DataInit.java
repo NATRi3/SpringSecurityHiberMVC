@@ -13,7 +13,6 @@ import java.util.Set;
 @Component
 @AllArgsConstructor
 public class DataInit {
-
     private final UserService userService;
     private final RoleService roleService;
 
@@ -48,7 +47,5 @@ public class DataInit {
         user2.setSurname("Userashvili");
         user2.setRoles(Set.of(roleService.getRoleByName("USER")));
         userService.saveUser(user2);
-
     }
-
 }

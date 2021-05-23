@@ -30,6 +30,7 @@
             justify-content: center;
             height: 100%;
         }
+
         .div_to_center {
             justify-content: center;
         }
@@ -48,37 +49,32 @@
 <body>
 <br/>
 <h2>User Info Update</h2>
-
-<form th:method="PATCH" th:action="@{/admin/user/{id}(id=*{id})}" th:object="${userToUpdate}">
+<form th:method="PUT" th:action="@{/admin/user/{id}(id=*{id})}" th:object="${userToUpdate}">
     <table>
         <tr>
             <td><label for="id">Personal Id</label></td>
-            <td><input type="text" th:field="*{id}" id="id"/></td>
+            <td><p th:text="*{id}" id="id"></p></td>
         </tr>
         <tr>
             <td><label for="username">Username</label></td>
-            <td><input type="text" th:field="*{username}" id="username"/></td>
-        </tr>
-        <tr>
-            <td><label for="password">Password</label></td>
-            <td><input type="text" th:field="*{password}" id="password"/></td>
+            <td><input required type="text" th:field="*{username}" id="username"/></td>
         </tr>
         <tr>
             <td><label for="name">Name</label></td>
-            <td><input type="text" th:field="*{name}" id="name"/></td>
+            <td><input required type="text" th:field="*{name}" id="name"/></td>
         </tr>
         <tr>
             <td><label for="surname">Surname</label></td>
-            <td><input type="text" th:field="*{surname}" id="surname"/></td>
+            <td><input required type="text" th:field="*{surname}" id="surname"/></td>
         </tr>
+        <input type="hidden" th:field="*{password}"/>
         <tr>
             <td><label>Roles</label></td>
             <td>
-                <select name="rolesSelected" multiple required size="3">
-                    <option disabled selected>Please select one ore more roles</option>
+                <select name="rolesSelected" multiple required size="2">
                     <div class="div_to_left" th:each="role : ${possibleRoles}">
-                        <option th:text="${role.getName()}" th:value="${role.getId()}" th:field="*{roles}"
-                                name="roles"/>
+                        <option th:text="${role.getName()}" th:value="${role.getId()}">
+                        </option>
                     </div>
                 </select>
             </td>
@@ -86,16 +82,34 @@
         <tr>
             <td colspan="2">
                 <div class="div_to_center">
-                    <input type="submit" value="Save" />
+                    <input type="submit" value="Save"/>
                 </div>
                 <div class="div_to_left_2">
-                    <form th:method="POST" th:action="@{/logout}">
-                        <input type="submit" value="Log out"/>
-                    </form>
                 </div>
             </td>
         </tr>
     </table>
+</form>
+<form th:method="PUT" th:action="@{/admin/user/{id}/pass(id=*{id})}">
+    <input type="hidden" th:value="*{id}">
+    <table>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td><input type="text" id="password" name="password"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="div_to_center">
+                    <input required type="submit" value="Change password"/>
+                </div>
+                <div class="div_to_left_2">
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Log out"/>
 </form>
 </body>
 </html>

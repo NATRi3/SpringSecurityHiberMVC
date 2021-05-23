@@ -43,7 +43,15 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void updateUser(Long id, User user) {
-        entityManager.merge(user);
+    public User updateUser(User user) {
+        return entityManager.merge(user);
+    }
+
+    @Override
+    public void updateUserPassword(Long id, String password) {
+        entityManager.createQuery("update User set password = :password where id = :id")
+                .setParameter("password", password)
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }

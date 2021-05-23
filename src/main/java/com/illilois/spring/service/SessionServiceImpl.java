@@ -7,10 +7,10 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service("expireUsereService")
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Component("expireUserService")
 @AllArgsConstructor
 public class SessionServiceImpl implements SessionService{
 
@@ -25,6 +25,7 @@ public class SessionServiceImpl implements SessionService{
                     for (SessionInformation information : sessionRegistry
                             .getAllSessions(userDetails, true)) {
                         information.expireNow();
+                        information.refreshLastRequest();
                     }
                 }
             }

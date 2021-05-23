@@ -3,9 +3,6 @@ package com.illilois.spring.service;
 import com.illilois.spring.dao.UserDAO;
 import com.illilois.spring.entity.User;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -27,9 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         userDAO.saveUser(user);
+        sessionService.expireUserSessions(user.getUsername());
     }
 
     @Override
@@ -38,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         User user = userDAO.deleteUser(id);
         if (user != null) {
@@ -46,13 +45,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        userDAO.updateUser(id, user);
+    @Transactional
+    public void updateUser(User user) {
+        String username = userDAO.getUserById(user.getId()).getUsername();
+        userDAO.updateUser(user);
+        sessionService.expireUserSessions(username);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDAO.getUserByUsername(username);
+    @Transactional
+    public void updateUserPassword(Long id, String password) {
+        userDAO.updateUserPassword(id, encoder.encode(password));
     }
 }

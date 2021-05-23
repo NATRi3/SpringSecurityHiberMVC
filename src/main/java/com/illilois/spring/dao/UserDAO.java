@@ -15,6 +15,8 @@ public interface UserDAO {
 
     User getUserByUsername(String username);
 
-    void updateUser(Long id, User user);
+    User updateUser(User user);
+
+    void updateUserPassword(Long id, String password);
 }
 
